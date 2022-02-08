@@ -42,6 +42,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """query on the current database session"""
+        # pdb.set_trace()
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -86,7 +87,8 @@ class DBStorage:
 
     def count(self, cls=None):
         """Count objects"""
-        objects = self.all()
-        if cls in classes.values():
+        if cls in classes.keys() or cls in classes.values():
             objects = self.all(cls)
+        else:
+            objects = self.all()
         return len(objects)
