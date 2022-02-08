@@ -5,10 +5,7 @@ from flask import Flask
 from api.v1.views import app_views
 
 
-app_views.url_map.strict_slashes = False
-
-
-@app_views.route('/status')
+@app_views.route('/status', strict_slashes=False)
 def status():
     """Return status ok"""
     return jsonify({'status': 'ok'})
