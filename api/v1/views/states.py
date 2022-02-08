@@ -20,7 +20,7 @@ def get_state(state_id):
     state = storage.get(State, state_id)
     if state is not None:
         state = state.to_dict()
-        return jsonify({state}), 200
+        return jsonify(state), 200
     return abort(404)
 
 
