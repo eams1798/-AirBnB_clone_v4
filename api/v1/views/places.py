@@ -10,7 +10,7 @@ from models.city import City
 from models.user import User
 from models.amenity import Amenity
 from models.state import State
-from flasgger.utils import swag_from
+# from flasgger.utils import swag_from
 
 
 @app_views.route('/cities/<string:city_id>/places',
@@ -21,6 +21,14 @@ def get_all_places(city_id):
     if city is None:
         abort(404)
     places = [obj.to_dict() for obj in city.places]
+    return jsonify(places)
+
+
+@app_views.route('/places', methods=['GET'],
+                 strict_slashes=False)
+def places():
+    """Return all places"""
+    places = [place.to_dict() for place in storage.all("Place").values()]
     return jsonify(places)
 
 
@@ -79,7 +87,7 @@ def post_place(place_id):
     if obj is None:
         abort(404)
     for key, value in request.get_json().items():
-        if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated']:
+        if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
             setattr(obj, key, value)
     storage.save()
     return jsonify(obj.to_dict())

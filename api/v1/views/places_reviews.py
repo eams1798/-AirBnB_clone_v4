@@ -21,6 +21,14 @@ def get_all_reviews(place_id):
     return jsonify(reviews)
 
 
+@app_views.route('/reviews', methods=['GET'],
+                 strict_slashes=False)
+def reviews():
+    """Return all reviews"""
+    reviews = [review.to_dict() for review in storage.all("Review").values()]
+    return jsonify(reviews)
+
+
 @app_views.route('/reviews/<string:review_id>', methods=['GET'],
                  strict_slashes=False)
 def get_review(review_id):

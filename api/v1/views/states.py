@@ -4,6 +4,7 @@ from models.state import State
 from api.v1.views import app_views
 from models import storage
 from flask import jsonify, abort, request, make_response
+import pdb
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -26,7 +27,7 @@ def get_state(state_id):
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete(state_id):
+def delete_state(state_id):
     """Delete state by id"""
     state = storage.get(State, state_id)
     if state is not None:
@@ -38,11 +39,11 @@ def delete(state_id):
 
 @app_views.route('/states', methods=['POST'],
                  strict_slashes=False)
-def post():
+def post_state():
     """Create a object"""
-    if not request_json():
+    if not request.get_json():
         return jsonify({"error": "Not a JSON"}), 404
-    elif "name" not in request_json():
+    elif "name" not in request.get_json():
         return make_response(jsonify({"error": "Missing name"}), 404)
     jsn = request.get_json()
     obj = State(**jsn)
@@ -52,7 +53,7 @@ def post():
 
 @app_views.route('/states/<state_id>', methods=['PUT'],
                  strict_slashes=False)
-def put(state_id):
+def put_state(state_id):
     """Update a state"""
     state = storage.get(State, state_id)
     if state is None:
@@ -60,7 +61,7 @@ def put(state_id):
     elif not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     for key, value in request.get_json().items():
-        if key not in ['id', 'created_at', 'updated']:
+        if key not in ['id', 'created_at', 'updated_at']:
             setattr(state, key, value)
     storage.save()
     return jsonify(state.to_dict())

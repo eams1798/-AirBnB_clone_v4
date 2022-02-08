@@ -2,12 +2,14 @@
 """This module controlls all the api resources"""
 from os import getenv
 from flask import Flask, jsonify
+from flask_cors import CORS
 from models import storage
 from api.v1.views import app_views
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 
+cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 @app.teardown_appcontext
 def close(exception):
@@ -22,4 +24,4 @@ def page_not_found(err):
 if __name__ == "__main__":
     apiHost = getenv("HBNB_API_HOST", default="0.0.0.0")
     apiPort = getenv("HBNB_API_PORT", default=5000)
-    app.run(debug=True, host=apiHost, port=int(apiPort))
+    app.run(host=apiHost, port=int(apiPort))

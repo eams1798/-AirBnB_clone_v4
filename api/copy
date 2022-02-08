@@ -1,0 +1,11 @@
+#!/bin/bash
+cp ../../backupBNB/v1/app.py v1/
+cp ../../backupBNB/v1/views/amenities.py v1/views/
+cp ../../backupBNB/v1/views/cities.py v1/views/
+cp ../../backupBNB/v1/views/index.py v1/views/
+cp ../../backupBNB/v1/views/places.py v1/views/
+cp ../../backupBNB/v1/views/places_reviews.py v1/views/
+cp ../../backupBNB/v1/views/states.py v1/views/
+cp ../../backupBNB/v1/views/users.py v1/views/
+cp ../../backupBNB/v1/views/__init__.py v1/views/
+cp ../../backupBNB/v1/views/places_amenities.py v1/views/
