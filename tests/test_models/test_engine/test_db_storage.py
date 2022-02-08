@@ -86,3 +86,80 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+
+@unittest.skipIf(
+       os.getenv('HBNB_TYPE_STORAGE') != 'db',
+       "This test only work in DBStorage")
+class TestDBStorage(unittest.TestCase):
+    """this will test the DBStorage"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Tests"""
+        cls.user = User()
+        cls.user.first_name = "Lufy"
+        cls.user.last_name = "Monkey"
+        cls.user.email = "OnePiece@hotmail.com"
+        cls.storage = DBStorage()
+
+    @classmethod
+    def teardown(cls):
+        """at the end of the test this will tear it down"""
+        del cls.user
+
+    def tearDown(self):
+        """teardown"""
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
+
+    def test_get(self):
+        """testing get method"""
+        obj = City(name="Lima")
+        obj.save()
+        models.storage.save()
+        looking_id = list(models.storage.all(City).values())[0].id
+        validation = str(models.storage.all()['State.' + looking_id])
+        self.assertNotEqual(validation, None)
+
+    def test_get_dbstorage2(self):
+        """Test get storage engine with valid data"""
+        test = (models.storage.count())
+        self.assertEqual(type(test), int)
+        test2 = (models.storage.count(State))
+        self.assertEqual(type(test2), int)
+        first_state_id = list(models.storage.all(State).values())[0].id
+        test3 = models.storage.get(State, first_state_id)
+        self.assertEqual(str(type(test3)), "<class 'models.state.State'>")
+
+    def test_get_fstorage_none(self):
+        """ testing invalid input"""
+        obj = State(name="Some state")
+        obj.save()
+        return_obj = models.storage.get('State', 'not_valid_id')
+        self.assertEqual(return_obj, None)
+        return_obj = models.storage.get('Not_valid_class', obj.id)
+        self.assertEqual(return_obj, None)
+        return_obj = models.storage.get('State', 33333)
+        self.assertEqual(return_obj, None)
+
+    def test_count_fstorage(self):
+        """ testing count method"""
+        old_count = models.storage.count()
+        obj = State(name="Some state")
+        obj.save()
+        new_count = models.storage.count()
+        self.assertEqual(old_count + 1, new_count)
+
+    def test_count_fstorage_cls(self):
+        """testing count method with class name"""
+        old_count = models.storage.count()
+        old_count_cls = models.storage.count('State')
+        obj = State(name="New York")
+        obj.save()
+        new_count = models.storage.count()
+        new_count_cls = models.storage.count('State')
+        self.assertEqual(old_count + 1, new_count)
+        self.assertEqual(old_count_cls + 1, new_count_cls)
