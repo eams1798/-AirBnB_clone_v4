@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""This module controlls all the api resources"""
 from os import getenv
 from flask import Flask, jsonify
 from models import storage
@@ -11,9 +13,11 @@ app.register_blueprint(app_views)
 def close(exception):
     storage.close()
 
+
 @app.errorhandler(404)
 def page_not_found(err):
     return jsonify({'error': 'Not found'}), 404
+
 
 if __name__ == "__main__":
     apiHost = getenv("HBNB_API_HOST", default="0.0.0.0")
