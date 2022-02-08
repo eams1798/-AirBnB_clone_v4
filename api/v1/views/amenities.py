@@ -40,9 +40,9 @@ def delete(amenity_id):
                  strict_slashes=False)
 def post():
     """Create a object"""
-    if not request_json:
+    if not request.get_json():
         return jsonify({"error": "Not a JSON"}), 404
-    elif "name" not in request_json:
+    elif "name" not in request.get_json():
         return make_response(jsonify({"error": "Missing name"}), 404)
     jsn = request.get_json()
     obj = Amenity(**jsn)
@@ -57,7 +57,7 @@ def put(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
-    elif not request.get_json:
+    elif not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     for key, value in request.get_json().items():
         if key not in ['id', 'created_at', 'updated']:
