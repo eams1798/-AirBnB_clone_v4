@@ -42,9 +42,9 @@ def del_amenity(amenity_id):
 def post_amenity():
     """Create a object"""
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 404
+        return jsonify({"error": "Not a JSON"}), 400
     elif "name" not in request.get_json():
-        return make_response(jsonify({"error": "Missing name"}), 404)
+        return make_response(jsonify({"error": "Missing name"}), 400)
     jsn = request.get_json()
     obj = Amenity(**jsn)
     obj.save()
