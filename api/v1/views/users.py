@@ -41,11 +41,11 @@ def del_user(user_id):
 def post_user():
     """Create a object"""
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 404
+        return jsonify({"error": "Not a JSON"}), 400
     elif "email" not in request.get_json():
-        return make_response(jsonify({"error": "Missing email"}), 404)
+        return make_response(jsonify({"error": "Missing email"}), 400)
     elif "password" not in request.get_json():
-        return make_response(jsonify({"error": "Missing password"}), 404)
+        return make_response(jsonify({"error": "Missing password"}), 400)
     jsn = request.get_json()
     obj = User(**jsn)
     obj.save()
