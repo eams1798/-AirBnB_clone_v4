@@ -23,7 +23,7 @@ def get_amenities_by_place(place_id):
     return jsonify(amenities)
 
 
-@app_views.route('/amenities/<string:place_id>/amenities/<amenity_id>',
+@app_views.route('/places/<string:place_id>/amenities/<amenity_id>',
                  methods=['DELETE'], strict_slashes=False)
 def del_amen_place(place_id, amenity_id):
     """ delete amenity by place"""
