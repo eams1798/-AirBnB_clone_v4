@@ -8,10 +8,12 @@ from models import storage
 from models.place import Place
 from models.amenity import Amenity
 from models.user import User
+from flasgger.utils import swag_from
 
 
 @app_views.route('/places/<string:place_id>/amenities',
                  methods=['GET'], strict_slashes=False)
+@swag_from('docs/places_amenities/get_amenities_by_place.yml', methods=['GET'])
 def get_amenities_by_place(place_id):
     """ get amenities from a spcific place """
     place = storage.get(Place, place_id)
@@ -25,6 +27,7 @@ def get_amenities_by_place(place_id):
 
 @app_views.route('/places/<string:place_id>/amenities/<amenity_id>',
                  methods=['DELETE'], strict_slashes=False)
+@swag_from('docs/places_amenities/del_amen_place.yml', methods=['DELETE'])
 def del_amen_place(place_id, amenity_id):
     """ delete amenity by place"""
     place = storage.get(Place, place_id)
@@ -42,6 +45,7 @@ def del_amen_place(place_id, amenity_id):
 
 @app_views.route('/places/<string:place_id>/amenities/<amenity_id>',
                  methods=['POST'], strict_slashes=False)
+@swag_from('docs/places_amenities/create_obj_amen_place.yml', methods=['POST'])
 def create_obj_amen_place(place_id, amenity_id):
     """ create new instance """
     place = storage.get(Place, place_id)

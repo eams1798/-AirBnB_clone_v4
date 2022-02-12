@@ -8,10 +8,12 @@ from models import storage
 from models.place import Place
 from models.review import Review
 from models.user import User
+from flasgger.utils import swag_from
 
 
 @app_views.route('/places/<string:place_id>/reviews',
                  methods=['GET'], strict_slashes=False)
+@swag_from('docs/places_reviews/get_all_reviews.yml', methods=['GET'])
 def get_all_reviews(place_id):
     """ get reviews from a spcific place """
     place = storage.get(Place, place_id)
@@ -23,6 +25,7 @@ def get_all_reviews(place_id):
 
 @app_views.route('/reviews', methods=['GET'],
                  strict_slashes=False)
+@swag_from('docs/places_reviews/reviews.yml', methods=['GET'])
 def reviews():
     """Return all reviews"""
     reviews = [review.to_dict() for review in storage.all("Review").values()]
@@ -31,6 +34,7 @@ def reviews():
 
 @app_views.route('/reviews/<string:review_id>', methods=['GET'],
                  strict_slashes=False)
+@swag_from('docs/places_reviews/get_review.yml', methods=['GET'])
 def get_review(review_id):
     """ get review by id"""
     review = storage.get(Review, review_id)
@@ -41,6 +45,7 @@ def get_review(review_id):
 
 @app_views.route('/reviews/<string:review_id>', methods=['DELETE'],
                  strict_slashes=False)
+@swag_from('docs/places_reviews/del_review.yml', methods=['DELETE'])
 def del_review(review_id):
     """ delete review by id"""
     review = storage.get(Review, review_id)
@@ -53,6 +58,7 @@ def del_review(review_id):
 
 @app_views.route('/places/<string:place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
+@swag_from('docs/places_reviews/create_obj_review.yml', methods=['POST'])
 def create_obj_review(place_id):
     """ create new instance """
     place = storage.get(Place, place_id)
@@ -76,7 +82,8 @@ def create_obj_review(place_id):
 
 @app_views.route('/reviews/<string:review_id>', methods=['PUT'],
                  strict_slashes=False)
-def post_review(review_id):
+@swag_from('docs/places_reviews/put_review.yml', methods=['PUT'])
+def put_review(review_id):
     """ updates by id """
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)

@@ -10,11 +10,12 @@ from models.city import City
 from models.user import User
 from models.amenity import Amenity
 from models.state import State
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route('/cities/<string:city_id>/places',
                  methods=['GET'], strict_slashes=False)
+@swag_from('docs/places/get_all_places.yml', methods=['GET'])
 def get_all_places(city_id):
     """ list cities by id """
     city = storage.get(City, city_id)
@@ -26,6 +27,7 @@ def get_all_places(city_id):
 
 @app_views.route('/places', methods=['GET'],
                  strict_slashes=False)
+@swag_from('docs/places/places.yml', methods=['GET'])
 def places():
     """Return all places"""
     places = [place.to_dict() for place in storage.all("Place").values()]
@@ -34,6 +36,7 @@ def places():
 
 @app_views.route('/places/<string:place_id>', methods=['GET'],
                  strict_slashes=False)
+@swag_from('docs/places/get_place.yml', methods=['GET'])
 def get_place(place_id):
     """ get place by id """
     place = storage.get(Place, place_id)
@@ -44,6 +47,7 @@ def get_place(place_id):
 
 @app_views.route('/places/<string:place_id>', methods=['DELETE'],
                  strict_slashes=False)
+@swag_from('docs/places/del_place.yml', methods=['DELETE'])
 def del_place(place_id):
     """ delete place by id """
     place = storage.get(Place, place_id)
@@ -56,6 +60,7 @@ def del_place(place_id):
 
 @app_views.route('/cities/<string:city_id>/places', methods=['POST'],
                  strict_slashes=False)
+@swag_from('docs/places/create_obj_place.yml', methods=['POST'])
 def create_obj_place(city_id):
     """ create new instance """
     city = storage.get(City, city_id)
@@ -79,7 +84,8 @@ def create_obj_place(city_id):
 
 @app_views.route('/places/<string:place_id>', methods=['PUT'],
                  strict_slashes=False)
-def post_place(place_id):
+@swag_from('docs/places/put_place.yml', methods=['PUT'])
+def put_place(place_id):
     """ update by id """
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
@@ -95,6 +101,7 @@ def post_place(place_id):
 
 @app_views.route('/places_search', methods=['POST'],
                  strict_slashes=False)
+@swag_from('docs/places/search_places_by_id.yml', methods=['POST'])
 def search_places_by_id():
     """ search places by id """
     if request.get_json() is None:

@@ -4,9 +4,11 @@ from models.amenity import Amenity
 from api.v1.views import app_views
 from models import storage
 from flask import jsonify, abort, request, make_response
+from flasgger.utils import swag_from
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
+@swag_from('docs/amenities/amenities.yml', methods=['GET'])
 def amenities():
     """return all amenities"""
     amenities = [amenity.to_dict()
@@ -16,6 +18,7 @@ def amenities():
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
+@swag_from('docs/amenities/get_Amenity.yml', methods=['GET'])
 def get_Amenity(amenity_id):
     """amenity by id"""
     amenity = storage.get(Amenity, amenity_id)
@@ -27,6 +30,7 @@ def get_Amenity(amenity_id):
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
+@swag_from('docs/amenities/del_amenity.yml', methods=['DELETE'])
 def del_amenity(amenity_id):
     """Delete amenity by id"""
     amenity = storage.get(Amenity, amenity_id)
@@ -39,6 +43,7 @@ def del_amenity(amenity_id):
 
 @app_views.route('/amenities', methods=['POST'],
                  strict_slashes=False)
+@swag_from('docs/amenities/post_amenity.yml', methods=['POST'])
 def post_amenity():
     """Create a object"""
     if not request.get_json():
@@ -53,6 +58,7 @@ def post_amenity():
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
                  strict_slashes=False)
+@swag_from('docs/amenities/put_amenity.yml', methods=['PUT'])
 def put_amenity(amenity_id):
     """Update a amenity"""
     amenity = storage.get(Amenity, amenity_id)

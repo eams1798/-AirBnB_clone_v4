@@ -1,0 +1,31 @@
+Gets the list of all reviews
+---
+tags:
+  - Reviews
+responses:
+  200:
+    description: Successful request
+    schema:
+      type: array
+      items:
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: time of creation of the instance
+          updated_at:
+            type: string
+            description: time of last update of the instance
+          id:
+            type: string
+            description: The uuid of the review instance
+          place_id:
+            type: string
+            description: id number of its place
+          user_id:
+            type: string
+            description: id number of its user
+          text:
+            type: string
+            description: text review

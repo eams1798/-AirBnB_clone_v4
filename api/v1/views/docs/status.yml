@@ -1,0 +1,7 @@
+Gets status OK
+---
+tags:
+  - stats
+responses:
+  200:
+    description: Successful request
