@@ -161,6 +161,7 @@ Second part of Airbnb: Joann Vuong
 
 ### Updated by:
 Estéfano Misme - [Github](https://github.com/estefanomisme/)
+Smith Flores - [Github](https://github.com/Luffy981/)
 
 ## License
 Public Domain. No copy write protection. 
