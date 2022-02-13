@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="../static/styles/6-filters.css?{{ cache_id }}" type="text/css">
 	<link rel="stylesheet" href="../static/styles/8-places.css?{{ cache_id }}" type="text/css">
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js?{{ cache_id }}"></script>
-	<script type="text/javascript" src="../static/scripts/3-hbnb.js?{{ cache_id }}"></script>
+	<script type="text/javascript" src="../static/scripts/4-hbnb.js?{{ cache_id }}"></script>
 </head>
 <body>
 	<header>
@@ -44,12 +44,13 @@
 					{% endfor %}
 				</ul>
 			</div>
-			<button>
+			<button id="bt_search">
 				Search
 			</button>
 		</section>
 		<section class="places">
 		<h1>Places</h1>
+		<!-- places generated in jquery -->
 		</section>
 	</div>
 	<footer>
