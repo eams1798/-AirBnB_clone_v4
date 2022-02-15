@@ -58,6 +58,24 @@ $(document).ready(function () {
     }
   );
 
+  const users = {};
+  $.getJSON("http://127.0.0.1:5001/api/v1/users/",
+    function (data) {
+      for (const user of data) {
+        users[user.id] = user.first_name + " " + user.last_name;
+      }
+    }
+  );
+
+  let dictusers = {};
+  $.getJSON("http://127.0.0.1:5001/api/v1/users/",
+    function (data) {
+      for (user of data) {
+        dictusers[user.id] = user.first_name + " " + user.last_name;
+      }
+    }
+  );
+
   function show_places (amenities, states, cities) {
     let am = {};
     let st = {};
@@ -84,7 +102,6 @@ $(document).ready(function () {
       ct = {'cities': ct_ids};
     }
     const filters = {'filters': [am, st, ct]}
-    console.log(filters);
     $.ajax({
       url: "http://127.0.0.1:5001/api/v1/places_search/",
       type: "POST",
@@ -93,6 +110,47 @@ $(document).ready(function () {
       success: function (data) {
         $('section.places').html('');
         for (const place of data) {
+          let dictamenities = {};
+          $.getJSON("http://127.0.0.1:5001/api/v1/places/" + place.id + "/amenities",
+            function (data) {
+              for (amens of data) {
+                dictamenities[amens.id] = amens.name;
+              }
+            }
+          )
+
+          let dictreviews = {};
+          $.getJSON("http://127.0.0.1:5001/api/v1/places/" + place.id + "/reviews",
+            function (data) {
+              for (revw of data) {
+                dictreviews[revw.user_id] = {};
+                dictreviews[revw.user_id]['name'] = dictusers[revw.user_id];
+                dictreviews[revw.user_id]['date'] = revw.created_at;
+                dictreviews[revw.user_id]['text'] = revw.text;
+              }
+            }
+          );
+
+          let lstamenities = $("<ul></ul>");
+          for (amens in dictamenities) {
+            lstamenities.append(`<li><p>${ dictamenities[amens] }</p></li>`);
+          }
+
+           let lstreviews = $("<ul id='HTMLreview'></ul>");
+           for (revw in dictreviews) {
+            lstreviews.append(`
+              <li>
+                <h3>From ${ dictreviews[revw]['name'] } the ${ dictreviews[revw]['date'] }:</h3>
+                <p>
+                  ${ dictreviews[revw]['text'] }
+                </p>
+              </li>`);
+            }
+          
+          console.log(lstamenities); 
+          console.log(lstreviews);
+
+
           let article = $('<article></article>');
           article.html(`
             <div class="header_place">
@@ -116,29 +174,20 @@ $(document).ready(function () {
               </div>
             </div>
             <div class="user">
-              <p><b>Owner:</b> User</p>
+              <p><b>Owner:</b> ${ users[place.user_id] }</p>
             </div>
             <div class="description">
               <p>
-                text
+                ${ place.description }
               </p>
             </div>
             <div class="amenities">
               <h2>Amenities</h2>
-              <ul>
-                <li><p>amenity</p></li>
-              </ul>
+              ${ lstamenities.html() }
             </div>
             <div class="reviews">
               <h2>Reviews</h2>
-              <ul>
-                <li>
-                  <h3>From user the date at hour:</h3>
-                  <p>
-                    text
-                  </p>
-                </li>
-              </ul>
+              ${ lstreviews.html() }
             </div>`);
           $('section.places').append(article);
         }

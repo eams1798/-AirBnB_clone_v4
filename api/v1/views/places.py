@@ -109,12 +109,19 @@ def search_places_by_id():
 
     data = request.get_json()
 
-    if data and len(data):
-        states = data.get('states', None)
-        cities = data.get('cities', None)
-        amenities = data.get('amenities', None)
+    states = []
+    cities = []
+    amenities = []
+    if data:
+        for dct in data.get('filters'):
+            if 'states' in dct.keys():
+                states = dct['states']
+            if 'cities' in dct.keys():
+                cities = dct['cities']
+            if 'amenities' in dct.keys():
+                amenities = dct['amenities']
 
-    if not data or not len(data) or (
+    if not data or (
             not states and
             not cities and
             not amenities):
